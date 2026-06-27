@@ -7,7 +7,10 @@ import {
     addPurchase,
 } from "../api/api";
 
+import "../styles/PurchaseEntry.css";
+
 function PurchaseEntry() {
+
     const navigate = useNavigate();
 
     const [vendors, setVendors] = useState([]);
@@ -53,6 +56,7 @@ function PurchaseEntry() {
     };
 
     const handleCategoryChange = async (e) => {
+
         const categoryId = e.target.value;
 
         setPurchase({
@@ -63,17 +67,23 @@ function PurchaseEntry() {
         });
 
         try {
+
             const response = await getUnitAndTypeList(categoryId);
 
             setUnits(response.data.unitList);
             setMaterialTypes(response.data.materialTypeList);
+
         } catch (error) {
+
             console.log(error);
             alert("Unable to load Units and Material Types");
+
         }
+
     };
 
     const validate = () => {
+
         if (purchase.vendorName === "") {
             alert("Please select Vendor");
             return false;
@@ -118,6 +128,7 @@ function PurchaseEntry() {
     };
 
     const submitPurchase = async (e) => {
+
         e.preventDefault();
 
         if (!validate()) return;
@@ -125,6 +136,7 @@ function PurchaseEntry() {
         setLoading(true);
 
         try {
+
             const response = await addPurchase(purchase);
 
             alert(response.data.message);
@@ -132,38 +144,40 @@ function PurchaseEntry() {
             navigate("/purchase-success", {
                 state: response.data,
             });
+
         } catch (error) {
+
             console.log(error);
             alert("Purchase Failed");
+
         } finally {
+
             setLoading(false);
+
         }
+
     };
 
     return (
-        <div className="max-w-5xl mx-auto mt-8 bg-white shadow-lg rounded-lg p-8">
 
-            <h2 className="text-3xl font-bold text-center text-blue-700 mb-8">
+        <div className="purchase-container">
+
+            <h2 className="purchase-title">
                 Purchase Entry
             </h2>
 
             <form
                 onSubmit={submitPurchase}
-                className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                className="purchase-form"
             >
 
-                {/* Vendor */}
-
-                <div>
-                    <label className="block font-semibold mb-2">
-                        Vendor
-                    </label>
+                <div className="form-group">
+                    <label>Vendor</label>
 
                     <select
                         name="vendorName"
                         value={purchase.vendorName}
                         onChange={handleChange}
-                        className="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">Select Vendor</option>
 
@@ -175,125 +189,73 @@ function PurchaseEntry() {
                                 {vendor.vendorName}
                             </option>
                         ))}
-
                     </select>
-
                 </div>
 
-                {/* Category */}
-
-                <div>
-
-                    <label className="block font-semibold mb-2">
-                        Material Category
-                    </label>
+                <div className="form-group">
+                    <label>Material Category</label>
 
                     <select
                         value={purchase.materialCategoryId}
                         onChange={handleCategoryChange}
-                        className="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
                     >
-
-                        <option value="">
-                            Select Category
-                        </option>
+                        <option value="">Select Category</option>
 
                         {categories.map((category) => (
-
                             <option
                                 key={category.materialCategoryId}
                                 value={category.materialCategoryId}
                             >
-
                                 {category.materialCategoryName}
-
                             </option>
-
                         ))}
-
                     </select>
-
                 </div>
 
-                {/* Material Type */}
-
-                <div>
-
-                    <label className="block font-semibold mb-2">
-                        Material Type
-                    </label>
+                <div className="form-group">
+                    <label>Material Type</label>
 
                     <select
                         name="materialTypeId"
                         value={purchase.materialTypeId}
                         onChange={handleChange}
-                        className="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
                     >
-
-                        <option value="">
-                            Select Material Type
-                        </option>
+                        <option value="">Select Material Type</option>
 
                         {materialTypes.map((type) => (
-
                             <option
                                 key={type.materialTypeId}
                                 value={type.materialTypeId}
                             >
-
                                 {type.materialTypeName}
-
                             </option>
-
                         ))}
-
                     </select>
-
                 </div>
 
-                {/* Unit */}
-
-                <div>
-
-                    <label className="block font-semibold mb-2">
-                        Unit
-                    </label>
+                <div className="form-group">
+                    <label>Unit</label>
 
                     <select
                         name="unitId"
                         value={purchase.unitId}
                         onChange={handleChange}
-                        className="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
                     >
-
-                        <option value="">
-                            Select Unit
-                        </option>
+                        <option value="">Select Unit</option>
 
                         {units.map((unit) => (
-
                             <option
                                 key={unit.unitId}
                                 value={unit.unitId}
                             >
-
                                 {unit.unitName}
-
                             </option>
-
                         ))}
-
                     </select>
-
                 </div>
 
-                {/* Brand */}
-
-                <div>
-
-                    <label className="block font-semibold mb-2">
-                        Brand Name
-                    </label>
+                <div className="form-group">
+                    <label>Brand Name</label>
 
                     <input
                         type="text"
@@ -301,18 +263,11 @@ function PurchaseEntry() {
                         value={purchase.brandName}
                         onChange={handleChange}
                         placeholder="Enter Brand Name"
-                        className="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
                     />
-
                 </div>
 
-                {/* Quantity */}
-
-                <div>
-
-                    <label className="block font-semibold mb-2">
-                        Quantity
-                    </label>
+                <div className="form-group">
+                    <label>Quantity</label>
 
                     <input
                         type="number"
@@ -320,18 +275,11 @@ function PurchaseEntry() {
                         value={purchase.quantity}
                         onChange={handleChange}
                         placeholder="Enter Quantity"
-                        className="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
                     />
-
                 </div>
 
-                {/* Purchase Amount */}
-
-                <div>
-
-                    <label className="block font-semibold mb-2">
-                        Purchase Amount
-                    </label>
+                <div className="form-group">
+                    <label>Purchase Amount</label>
 
                     <input
                         type="number"
@@ -339,39 +287,28 @@ function PurchaseEntry() {
                         value={purchase.purchaseAmount}
                         onChange={handleChange}
                         placeholder="Enter Purchase Amount"
-                        className="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
                     />
-
                 </div>
 
-                {/* Purchase Date */}
-
-                <div>
-
-                    <label className="block font-semibold mb-2">
-                        Purchase Date
-                    </label>
+                <div className="form-group">
+                    <label>Purchase Date</label>
 
                     <input
                         type="date"
                         name="purchaseDate"
                         value={purchase.purchaseDate}
                         onChange={handleChange}
-                        className="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
                     />
-
                 </div>
 
-                <div className="md:col-span-2 flex justify-center mt-6">
+                <div className="submit-section">
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="bg-blue-700 hover:bg-blue-800 text-white px-8 py-3 rounded-lg font-semibold"
+                        className="save-button"
                     >
-
                         {loading ? "Saving..." : "Save Purchase"}
-
                     </button>
 
                 </div>
@@ -379,7 +316,9 @@ function PurchaseEntry() {
             </form>
 
         </div>
+
     );
+
 }
 
 export default PurchaseEntry;

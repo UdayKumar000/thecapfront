@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getVendors, getPurchaseReport } from "../api/api";
+import "../styles/VendorReport.css";
 
 const VendorReport = () => {
     const [vendors, setVendors] = useState([]);
@@ -35,6 +36,7 @@ const VendorReport = () => {
     };
 
     const searchReport = async () => {
+
         if (!form.vendorName) {
             alert("Please select Vendor");
             return;
@@ -51,40 +53,46 @@ const VendorReport = () => {
         }
 
         try {
+
             setLoading(true);
 
             const response = await getPurchaseReport(form);
 
             setReport(response.data);
+
         } catch (error) {
+
             console.error(error);
             alert("Unable to fetch report");
+
         } finally {
+
             setLoading(false);
+
         }
+
     };
 
     return (
-        <div className="max-w-7xl mx-auto p-6">
 
-            <h1 className="text-3xl font-bold text-center mb-8">
+        <div className="report-container">
+
+            <h1 className="report-title">
                 Vendor Wise Purchase Report
             </h1>
 
-            <div className="bg-white shadow rounded-lg p-6">
+            <div className="report-card">
 
-                <div className="grid md:grid-cols-4 gap-4">
+                <div className="report-form">
 
-                    <div>
-                        <label className="block mb-2 font-semibold">
-                            Vendor
-                        </label>
+                    <div className="form-group">
+
+                        <label>Vendor</label>
 
                         <select
                             name="vendorName"
                             value={form.vendorName}
                             onChange={handleChange}
-                            className="w-full border rounded px-3 py-2"
                         >
                             <option value="">
                                 Select Vendor
@@ -98,47 +106,42 @@ const VendorReport = () => {
                                     {vendor.vendorName}
                                 </option>
                             ))}
+
                         </select>
 
                     </div>
 
-                    <div>
+                    <div className="form-group">
 
-                        <label className="block mb-2 font-semibold">
-                            From Date
-                        </label>
+                        <label>From Date</label>
 
                         <input
                             type="date"
                             name="fromDate"
                             value={form.fromDate}
                             onChange={handleChange}
-                            className="w-full border rounded px-3 py-2"
                         />
 
                     </div>
 
-                    <div>
+                    <div className="form-group">
 
-                        <label className="block mb-2 font-semibold">
-                            To Date
-                        </label>
+                        <label>To Date</label>
 
                         <input
                             type="date"
                             name="toDate"
                             value={form.toDate}
                             onChange={handleChange}
-                            className="w-full border rounded px-3 py-2"
                         />
 
                     </div>
 
-                    <div className="flex items-end">
+                    <div className="button-group">
 
                         <button
                             onClick={searchReport}
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
+                            className="search-button"
                         >
                             Search
                         </button>
@@ -148,41 +151,32 @@ const VendorReport = () => {
                 </div>
 
                 {loading && (
-                    <div className="text-center mt-6 text-blue-600 font-semibold">
+                    <div className="loading">
                         Loading...
                     </div>
                 )}
 
                 {!loading && report.length > 0 && (
 
-                    <div className="overflow-x-auto mt-8">
+                    <div className="table-wrapper">
 
-                        <table className="min-w-full border border-gray-300">
+                        <table className="report-table">
 
-                            <thead className="bg-gray-200">
+                            <thead>
 
                                 <tr>
 
-                                    <th className="border px-3 py-2">Purchase Id</th>
-
-                                    <th className="border px-3 py-2">Transaction Id</th>
-
-                                    <th className="border px-3 py-2">Vendor</th>
-
-                                    <th className="border px-3 py-2">Category</th>
-
-                                    <th className="border px-3 py-2">Material Type</th>
-
-                                    <th className="border px-3 py-2">Brand</th>
-
-                                    <th className="border px-3 py-2">Unit</th>
-
-                                    <th className="border px-3 py-2">Quantity</th>
-                                    <th className="border px-3 py-2">Purchase Amount</th>
-
-                                    <th className="border px-3 py-2">Purchase Date</th>
-
-                                    <th className="border px-3 py-2">Status</th>
+                                    <th>Purchase Id</th>
+                                    <th>Transaction Id</th>
+                                    <th>Vendor</th>
+                                    <th>Category</th>
+                                    <th>Material Type</th>
+                                    <th>Brand</th>
+                                    <th>Unit</th>
+                                    <th>Quantity</th>
+                                    <th>Purchase Amount</th>
+                                    <th>Purchase Date</th>
+                                    <th>Status</th>
 
                                 </tr>
 
@@ -192,54 +186,19 @@ const VendorReport = () => {
 
                                 {report.map((purchase, index) => (
 
-                                    <tr
-                                        key={index}
-                                        className="text-center hover:bg-gray-100"
-                                    >
+                                    <tr key={index}>
 
-                                        <td className="border px-3 py-2">
-                                            {purchase.purchaseId}
-                                        </td>
-
-                                        <td className="border px-3 py-2">
-                                            {purchase.transactionId}
-                                        </td>
-
-                                        <td className="border px-3 py-2">
-                                            {purchase.vendorName}
-                                        </td>
-
-                                        <td className="border px-3 py-2">
-                                            {purchase.materialCategoryName}
-                                        </td>
-
-                                        <td className="border px-3 py-2">
-                                            {purchase.materialTypeName}
-                                        </td>
-
-                                        <td className="border px-3 py-2">
-                                            {purchase.brandName}
-                                        </td>
-
-                                        <td className="border px-3 py-2">
-                                            {purchase.materialUnitName}
-                                        </td>
-
-                                        <td className="border px-3 py-2">
-                                            {purchase.quantity}
-                                        </td>
-
-                                        <td className="border px-3 py-2">
-                                            ₹ {purchase.purchaseAmount}
-                                        </td>
-
-                                        <td className="border px-3 py-2">
-                                            {purchase.purchaseDate}
-                                        </td>
-
-                                        <td className="border px-3 py-2">
-                                            {purchase.status}
-                                        </td>
+                                        <td>{purchase.purchaseId}</td>
+                                        <td>{purchase.transactionId}</td>
+                                        <td>{purchase.vendorName}</td>
+                                        <td>{purchase.materialCategoryName}</td>
+                                        <td>{purchase.materialTypeName}</td>
+                                        <td>{purchase.brandName}</td>
+                                        <td>{purchase.materialUnitName}</td>
+                                        <td>{purchase.quantity}</td>
+                                        <td>₹ {purchase.purchaseAmount}</td>
+                                        <td>{purchase.purchaseDate}</td>
+                                        <td>{purchase.status}</td>
 
                                     </tr>
 
@@ -255,10 +214,8 @@ const VendorReport = () => {
 
                 {!loading && report.length === 0 && (
 
-                    <div className="text-center mt-8 text-gray-500">
-
+                    <div className="no-records">
                         No Purchase Records Found
-
                     </div>
 
                 )}

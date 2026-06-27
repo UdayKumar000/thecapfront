@@ -1,4 +1,5 @@
-import { useLocation, Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import "../styles/PurchaseSuccess.css";
 
 function PurchaseSuccess() {
 
@@ -6,80 +7,47 @@ function PurchaseSuccess() {
 
     return (
 
-        <div className="max-w-4xl mx-auto mt-10">
+        <div className="success-container">
 
-            <div className="bg-green-100 border border-green-500 rounded-lg p-8">
+            <div className="success-card">
 
-                <h1 className="text-3xl font-bold text-green-700 mb-4">
-
-                    {state?.status}
-
-                </h1>
-
-                <p className="text-lg mb-6">
-
-                    {state?.message}
-
-                </p>
-
-                <div className="bg-white rounded-lg shadow p-6">
-
-                    <h2 className="text-xl font-semibold mb-4">
-
-                        Purchase Details
-
-                    </h2>
-
-                    <table className="table-auto w-full">
-
-                        <tbody>
-
-                            <tr>
-                                <td className="font-semibold py-2">Vendor</td>
-                                <td>{state?.purchase?.vendorName}</td>
-                            </tr>
-
-                            <tr>
-                                <td className="font-semibold py-2">Brand</td>
-                                <td>{state?.purchase?.brandName}</td>
-                            </tr>
-
-                            <tr>
-                                <td className="font-semibold py-2">Quantity</td>
-                                <td>{state?.purchase?.quantity}</td>
-                            </tr>
-
-                            <tr>
-                                <td className="font-semibold py-2">Purchase Amount</td>
-                                <td>{state?.purchase?.purchaseAmount}</td>
-                            </tr>
-
-                            <tr>
-                                <td className="font-semibold py-2">Purchase Date</td>
-                                <td>{state?.purchase?.purchaseDate}</td>
-                            </tr>
-
-                            <tr>
-                                <td className="font-semibold py-2">Status</td>
-                                <td>{state?.purchase?.status}</td>
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-
+                <div className="success-icon">
+                    ✓
                 </div>
 
-                <div className="mt-8">
+                <h2 className="success-title">
+                    Purchase Saved Successfully
+                </h2>
 
-                    <Link
-                        to="/purchase-entry"
-                        className="bg-blue-700 text-white px-6 py-3 rounded-lg"
-                    >
-                        Add Another Purchase
-                    </Link>
+                {state && (
 
-                </div>
+                    <div className="success-details">
+
+                        <div className="detail-row">
+                            <span>Purchase Id</span>
+                            <strong>{state.purchaseId}</strong>
+                        </div>
+
+                        <div className="detail-row">
+                            <span>Vendor</span>
+                            <strong>{state.vendorName}</strong>
+                        </div>
+
+                        <div className="detail-row">
+                            <span>Amount</span>
+                            <strong>₹ {state.purchaseAmount}</strong>
+                        </div>
+
+                    </div>
+
+                )}
+
+                <Link
+                    to="/purchase-entry"
+                    className="new-entry-button"
+                >
+                    Add Another Purchase
+                </Link>
 
             </div>
 
